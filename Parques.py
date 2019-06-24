@@ -156,7 +156,7 @@ def cuadros():
 
 if __name__ == '__main__':
     pygame.init()
-    pantalla = pygame.display.set_mode([Ancho,Alto])
+    pantalla = pygame.display.set_mode([Ancho+400,Alto])
     fuente = pygame.font.Font(None, 20)
 
 
