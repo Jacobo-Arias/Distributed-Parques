@@ -1,0 +1,11 @@
+commit 12f362e26fbbc9378b094285e5478774bf87d6d8
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Sun Jun 23 22:55:33 2019 -0500
+
+    "Actualizado"
+
+commit 47fabf34e3174f9fc6ab189790333f305cadd42d
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Sun Jun 23 22:29:25 2019 -0500
+
+    first commit
