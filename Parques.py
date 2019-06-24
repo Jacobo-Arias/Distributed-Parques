@@ -19,7 +19,7 @@ class Bloque (pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.id_obj = cont
 
-def torre(este):
+def torre(este): #creacion base torres cielo
     if este == 0:
         usuario = Bloque([77,25])
         usuario.image.fill(VERDE)
@@ -117,7 +117,7 @@ def cuadros():
             lista.append(usuario)
             blancos.append(usuario)
 
-    for j in range(4):
+    for j in range(4): #creacion torres al cielo
         if j in [0,2]: size = [77,25]
         else: size = [25,77] 
         for i in range(7):
@@ -176,3 +176,17 @@ if __name__ == '__main__':
         for i in blancos:
             pantalla.blit(fuente.render(str(i.id_obj),False,[0,0,0]),i.rect.center)
         pygame.display.flip()
+
+asda
+async def as
+das
+das
+da
+sd
+asd
+asd
+asd
+assd
+asd
+(parameter_list):
+    pass
