@@ -1,3 +1,9 @@
+commit d4501755a14b974821fd33f9e458f07a72f927be
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Mon Jun 24 14:26:58 2019 -0500
+
+    Tablero final
+
 commit 12f362e26fbbc9378b094285e5478774bf87d6d8
 Author: Jacobo Arias <jacobo.a12@utp.edu.co>
 Date:   Sun Jun 23 22:55:33 2019 -0500

@@ -19,29 +19,53 @@ class Bloque (pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.id_obj = cont
 
+class Ficho(pygame.sprite.Sprite):
+     def __init__(self,nume = [0,1],cielo = [0,0,0]):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([10,10])
+        self.color = [nume[0][0]/6*4,nume[0][1]/6*4,nume[0][2]/6*4]
+        self.id = nume
+        self.rect = self.image.get_rect()
+        self.nume = nume
+        self.safe = True
+        self.pos = None
+        self.cielo = cielo
+
+
+def CreacionFichos():
+    aux = [[1,69,75],[18,76,82],[52,90,96],[35,83,89]]
+    lista = []
+    for j in range (4):
+        for i in range (4):
+            ficha = Ficho([colores[j],i+1],aux[j])
+            ficha.rect.center = [j*50+50,i*50+50]
+            lista.append(ficha)
+    print len(lista)
+    return lista
+
+
 def torre(este): #creacion base torres cielo
-    if este == 7:
+    if este == 0:
         usuario = Bloque([77,25])
         usuario.image.fill(VERDE)
         usuario.rect.x = Ancho/2 - 77/2
         usuario.rect.y = 0
-    if este == 1:
+    if este == 2:
         usuario = Bloque([25,77])
         usuario.image.fill(AZUL)
         usuario.rect.x = 0
         usuario.rect.y = Alto/2 - 77 /2
-    elif este == 3:
+    elif este == 4:
         usuario = Bloque([77,25])
         usuario.image.fill(ROJO)
         usuario.rect.x = Ancho/2 - 77/2
         usuario.rect.y = Alto - 24
-    elif este == 5:
+    elif este == 6:
         usuario = Bloque([25,77])
         usuario.image.fill(AMARILLO)
         usuario.rect.x = Ancho-25
         usuario.rect.y = Alto/2 - 77 /2
     return usuario
-
 
 def cuadros():
     lista =[]
@@ -57,7 +81,7 @@ def cuadros():
         bases.append(usuario)
     
     for j in range (8):  #Creacion cuadros 
-        if j in [1,3,5,7]: 
+        if j in [0,2,4,6]: 
             aux = torre(j)
             blancos.append(aux)
             lista.append(aux)
@@ -153,7 +177,6 @@ def cuadros():
     return lista,bases,blancos
 
 
-
 if __name__ == '__main__':
     pygame.init()
     pantalla = pygame.display.set_mode([Ancho+400,Alto])
@@ -164,6 +187,10 @@ if __name__ == '__main__':
     grupo = pygame.sprite.Group()
     lista,bases,blancos = cuadros()
     grupo.add(lista)
+    fichos = CreacionFichos()
+
+    pygame.draw.rect(pantalla,[255,255,255],[[650,0],[850,650]])
+    pygame.draw.line(pantalla,[0,0,0],[650,0],[650,650],2)
 
     fin = False
     while not fin:
@@ -175,4 +202,7 @@ if __name__ == '__main__':
         grupo.draw(pantalla)
         for i in blancos:
             pantalla.blit(fuente.render(str(i.id_obj),False,[0,0,0]),i.rect.center)
+        for i in fichos:
+            pygame.draw.circle(pantalla,i.color,i.rect.center,9)
+            pantalla.blit(fuente.render(str(i.nume[1]),False,[255,255,255]),i.rect)
         pygame.display.flip()
