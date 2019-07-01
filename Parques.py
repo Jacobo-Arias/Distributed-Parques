@@ -31,6 +31,41 @@ class Ficho(pygame.sprite.Sprite):
         self.pos = None
         self.cielo = cielo
 
+class Dado (pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([150, 150])
+        self.image.fill(BLANCO)
+        self.rect = self.image.get_rect()
+        self.rect.x = 680
+        self.rect.y = 20
+        self.valor = 0
+        self.carcel = False
+        self.lanzamientoTurno = 1
+
+class botonLanzamiento (pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self, dimensiones)
+        self.image = pygame.Surface(dimensiones)
+        self.image.fill(BLANCO)
+        self.rect = self.image.get_rect()
+
+def lanzamientoDados (inicioJuego, fichasRestantes):
+    lanzamientos = 1
+    if inicioJuego:
+        lanzamientos = 3
+        for i in range (0, lanzamientos):
+            dado1 = random.randint(1, 6)
+            dado2 = random.randint(1, 6)
+    else:
+        for i in range (0, lanzamientos):
+            dado1 = random.randint(1, 6)
+            dado2 = random.randint(1, 6)
+        if fichasRestantes == 1:
+            dado2 = 0
+    return dado1, dado2
+
+
 
 def CreacionFichos():
     aux = [[1,69,75],[18,76,82],[52,90,96],[35,83,89]]
@@ -189,6 +224,8 @@ if __name__ == '__main__':
     grupo.add(lista)
     fichos = CreacionFichos()
 
+    dados = pygame.sprite.Group()
+
     pygame.draw.rect(pantalla,[255,255,255],[[650,0],[850,650]])
     pygame.draw.line(pantalla,[0,0,0],[650,0],[650,650],2)
 
@@ -197,7 +234,7 @@ if __name__ == '__main__':
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 fin = True
-        
+
 
         grupo.draw(pantalla)
         for i in blancos:
@@ -205,4 +242,10 @@ if __name__ == '__main__':
         for i in fichos:
             pygame.draw.circle(pantalla,i.color,i.rect.center,9)
             pantalla.blit(fuente.render(str(i.nume[1]),False,[255,255,255]),i.rect)
+
+        #Dados pos
+        pygame.draw.rect(pantalla, [0,0,0], [680, 20, 150, 150], 4)
+        pygame.draw.rect(pantalla, [0,0,0], [870, 20, 150, 150], 4)
+        pygame.draw.rect(pantalla, [0,0,0], [770, 200, 150, 50], 4)
+
         pygame.display.flip()
