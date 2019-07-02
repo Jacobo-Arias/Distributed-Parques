@@ -54,7 +54,13 @@ class botonLanzamiento (pygame.sprite.Sprite):
         self.rect.y = 200
         self.presionado = False 
         self.texto = "Lanzar"
+        '''
         self.habilitado = True
+        textsurface = FONT.render(element, True, FONT_COLOR)
+        textrect = textsurface.get_rect(center=self.image.get_rect().center)
+        self.image.blit(textsurface, textrect)
+        self.rect = self.image.get_rect(center=pos)
+        '''
     
     def presionarBoton(self):
         if self.presionado:
@@ -243,9 +249,16 @@ if __name__ == '__main__':
     fin = False
     while not fin:
         for event in pygame.event.get():
+            pos=pygame.mouse.get_pos()
+            #Eventos dentro del juego
             if event.type == pygame.QUIT:
                 fin = True
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                    print "Clic"
+                    for b in botones:
+                        if b.rect.collidepoint(pos):
+                            print ("Clic boton")
 
         grupo.draw(pantalla)
         for i in blancos:
