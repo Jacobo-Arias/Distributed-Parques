@@ -20,7 +20,7 @@ class Bloque (pygame.sprite.Sprite):
         self.id_obj = cont
 
 class Ficho(pygame.sprite.Sprite):
-     def __init__(self,nume = [0,1],cielo = [0,0,0]):
+    def __init__(self,nume = [0,1],cielo = [0,0,0]):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([10,10])
         self.color = [nume[0][0]/6*4,nume[0][1]/6*4,nume[0][2]/6*4]
@@ -32,23 +32,33 @@ class Ficho(pygame.sprite.Sprite):
         self.cielo = cielo
 
 class Dado (pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, numeroDado):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([150, 150])
-        self.image.fill(BLANCO)
+        self.image.fill([220, 220, 220])
         self.rect = self.image.get_rect()
-        self.rect.x = 680
-        self.rect.y = 20
+        self.rect.x = 0
+        self.rect.y = 0
         self.valor = 0
         self.carcel = False
         self.lanzamientoTurno = 1
+        self.numeroDado = numeroDado
 
 class botonLanzamiento (pygame.sprite.Sprite):
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self, dimensiones)
-        self.image = pygame.Surface(dimensiones)
-        self.image.fill(BLANCO)
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([150, 50])
+        self.image.fill([63, 122, 77])
         self.rect = self.image.get_rect()
+        self.rect.x = 770
+        self.rect.y = 200
+        self.presionado = False 
+        self.texto = "Lanzar"
+        self.habilitado = True
+    
+    def presionarBoton(self):
+        if self.presionado:
+         pass
 
 def lanzamientoDados (inicioJuego, fichasRestantes):
     lanzamientos = 1
@@ -75,7 +85,7 @@ def CreacionFichos():
             ficha = Ficho([colores[j],i+1],aux[j])
             ficha.rect.center = [j*50+50,i*50+50]
             lista.append(ficha)
-    print len(lista)
+    print (len(lista))
     return lista
 
 
@@ -217,8 +227,9 @@ if __name__ == '__main__':
     pantalla = pygame.display.set_mode([Ancho+400,Alto])
     fuente = pygame.font.Font(None, 20)
 
-
-
+    todos = pygame.sprite.Group()
+    botones = pygame.sprite.Group()
+    dados = pygame.sprite.Group()
     grupo = pygame.sprite.Group()
     lista,bases,blancos = cuadros()
     grupo.add(lista)
@@ -247,5 +258,20 @@ if __name__ == '__main__':
         pygame.draw.rect(pantalla, [0,0,0], [680, 20, 150, 150], 4)
         pygame.draw.rect(pantalla, [0,0,0], [870, 20, 150, 150], 4)
         pygame.draw.rect(pantalla, [0,0,0], [770, 200, 150, 50], 4)
+        for i in range (0, 2):
+            dado = Dado(i+1)
+            if i == 0:
+                dado.rect.x = 680
+                dado.rect.y = 20
+            else:
+                dado.rect.x = 870
+                dado.rect.y = 20
+            dados.add(dado)
+            todos.add(dado)
 
+        botonLanzar = botonLanzamiento()
+        botones.add(botonLanzar)
+        todos.add(botonLanzar)
+
+        todos.draw(pantalla)
         pygame.display.flip()
