@@ -266,9 +266,10 @@ if __name__ == '__main__':
                                 dadosT = lanzamientoDados(False, 3)
                                 print (dadosT)
                             for d in dados:
+                                pass
                                 #pantalla.blit(fuenteDados.render(str(dado.valor), False, [220, 220, 220]), dado.rect.center)
                                 #d.updateValor(dadosT[0])
-                            clicD = 0
+                        clicD = 0
 
 
         grupo.draw(pantalla)
