@@ -44,6 +44,9 @@ class Dado (pygame.sprite.Sprite):
         self.lanzamientoTurno = 1
         self.numeroDado = numeroDado
 
+    def updateValor (self, v):
+        self.valor = v
+
 class botonLanzamiento (pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -223,7 +226,7 @@ def cuadros():
 
     for i in blancos:
         i.id_obj = contador[0]
-        contador[0] +=1
+        contador[0] += 1
 
     return lista,bases,blancos
 
@@ -232,12 +235,12 @@ if __name__ == '__main__':
     pygame.init()
     pantalla = pygame.display.set_mode([Ancho+400,Alto])
     fuente = pygame.font.Font(None, 20)
-
+    fuenteDados = pygame.font.Font(None, 50)
     todos = pygame.sprite.Group()
     botones = pygame.sprite.Group()
     dados = pygame.sprite.Group()
     grupo = pygame.sprite.Group()
-    lista,bases,blancos = cuadros()
+    lista, bases, blancos = cuadros()
     grupo.add(lista)
     fichos = CreacionFichos()
 
@@ -255,10 +258,18 @@ if __name__ == '__main__':
                 fin = True
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                    print "Clic"
+                    print ("Clic")
+                    clicD = 1
                     for b in botones:
                         if b.rect.collidepoint(pos):
-                            print ("Clic boton")
+                            if clicD == 1:
+                                dadosT = lanzamientoDados(False, 3)
+                                print (dadosT)
+                            for d in dados:
+                                #pantalla.blit(fuenteDados.render(str(dado.valor), False, [220, 220, 220]), dado.rect.center)
+                                #d.updateValor(dadosT[0])
+                            clicD = 0
+
 
         grupo.draw(pantalla)
         for i in blancos:
@@ -271,6 +282,7 @@ if __name__ == '__main__':
         pygame.draw.rect(pantalla, [0,0,0], [680, 20, 150, 150], 4)
         pygame.draw.rect(pantalla, [0,0,0], [870, 20, 150, 150], 4)
         pygame.draw.rect(pantalla, [0,0,0], [770, 200, 150, 50], 4)
+        
         for i in range (0, 2):
             dado = Dado(i+1)
             if i == 0:
@@ -281,10 +293,16 @@ if __name__ == '__main__':
                 dado.rect.y = 20
             dados.add(dado)
             todos.add(dado)
+        
+
 
         botonLanzar = botonLanzamiento()
         botones.add(botonLanzar)
         todos.add(botonLanzar)
 
         todos.draw(pantalla)
+        for dado in dados:
+            pantalla.blit(fuenteDados.render(str(dado.valor), False, [0,0,0]), dado.rect.center)
+        for b in botones:
+            pantalla.blit(fuenteDados.render("Lanzar", False, [0,0,0]), b.rect.topleft)
         pygame.display.flip()
