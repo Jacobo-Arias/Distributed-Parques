@@ -55,7 +55,7 @@ class botonLanzamiento (pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 770
         self.rect.y = 200
-        self.presionado = False 
+        self.presionado = False
         self.texto = "Lanzar"
         '''
         self.habilitado = True
@@ -265,10 +265,14 @@ if __name__ == '__main__':
                             if clicD == 1:
                                 dadosT = lanzamientoDados(False, 3)
                                 print (dadosT)
+                                #pantalla.fill([0,0,0])
                             for d in dados:
-                                pass
-                                #pantalla.blit(fuenteDados.render(str(dado.valor), False, [220, 220, 220]), dado.rect.center)
-                                #d.updateValor(dadosT[0])
+                                pantalla.blit(fuenteDados.render(str(dado.valor), False, [220, 220, 220]), dado.rect.center)
+                                if d.numeroDado == 1:
+                                    d.updateValor(dadosT[0])
+                                else:
+                                    d.updateValor(dadosT[1])
+
                         clicD = 0
 
 
@@ -282,6 +286,7 @@ if __name__ == '__main__':
         #Dados pos
         pygame.draw.rect(pantalla, [0,0,0], [680, 20, 150, 150], 4)
         pygame.draw.rect(pantalla, [0,0,0], [870, 20, 150, 150], 4)
+        #Boton lanzar
         pygame.draw.rect(pantalla, [0,0,0], [770, 200, 150, 50], 4)
         
         for i in range (0, 2):
@@ -302,8 +307,10 @@ if __name__ == '__main__':
         todos.add(botonLanzar)
 
         todos.draw(pantalla)
+
         for dado in dados:
             pantalla.blit(fuenteDados.render(str(dado.valor), False, [0,0,0]), dado.rect.center)
         for b in botones:
             pantalla.blit(fuenteDados.render("Lanzar", False, [0,0,0]), b.rect.topleft)
+
         pygame.display.flip()
