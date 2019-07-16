@@ -9,7 +9,7 @@ seguros=[1,6,13,18,23,30,35,40,47,52,57,64]
 class Tablero():
 	def __init__(self):
 		#Todas las fichas empiezan el la carcel
-		self.jugador1=[-1,0,0,0] #Verdes
+		self.jugador1=[0,0,0,0] #Verdes
 		self.jugador2=[0,0,0,0] #Azules
 		self.jugador3=[0,0,0,0] #Rojas
 		self.jugador4=[0,0,0,0] #Amarillas
@@ -302,7 +302,7 @@ def remove(conexion):
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-server.bind(("192.168.1.70", 8000))
+server.bind(("localhost", 8000))
 server.listen(5)
 clientes = []
 listaNombres = [None,None,None,None]
