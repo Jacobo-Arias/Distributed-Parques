@@ -32,6 +32,32 @@ class Ficho(pygame.sprite.Sprite):
         self.pos = None
         self.cielo = cielo
 
+class botonFicha (pygame.sprite.Sprite):
+    def __init__(self, numFicho):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([50, 50])
+        self.image.fill([220, 220, 220])
+        self.rect = self.image.get_rect()
+        self.rect.x = 0
+        self.rect.y = 0
+        self.presionado = False
+        self.ficha = numFicho
+        self.texto = 0
+        self.carcel = True
+        self.cielo = False
+        self.seleccionado = False
+
+class botonDado (pygame.sprite.Sprite):
+    def __init__(self, valor):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([50, 50])
+        self.image.fill([220, 220, 220])
+        self.rect = self.image.get_rect()
+        self.rect.x = 0
+        self.rect.y = 0
+        self.valor = valor
+        self.seleccionado = False
+
 class Dado (pygame.sprite.Sprite):
     def __init__(self, numeroDado):
         pygame.sprite.Sprite.__init__(self)
@@ -62,6 +88,7 @@ class botonLanzamiento (pygame.sprite.Sprite):
     def presionarBoton(self):
         if self.presionado:
             pass
+
 
 def lanzamientoDados (inicioJuego, fichasRestantes):
     lanzamientos = 1
@@ -229,6 +256,7 @@ if __name__ == '__main__':
     fuenteDados = pygame.font.Font(None, 50)
     todos = pygame.sprite.Group()
     botones = pygame.sprite.Group()
+    botonesFichas = pygame.sprite.Group()
     dados = pygame.sprite.Group()
     grupo = pygame.sprite.Group()
     lista, bases, blancos = cuadros()
@@ -249,6 +277,27 @@ if __name__ == '__main__':
             dado.rect.y = 20
         dados.add(dado)
         todos.add(dado)
+
+    for i in range (0,5):
+        botonF = botonFicha(i+1)
+        if i == 0:
+            botonF.ficha = 1
+            botonF.rect.x = 680
+            botonF.rect.y = 400
+        elif i == 1:
+            botonF.ficha = 2
+            botonF.rect.x = 780
+            botonF.rect.y = 400
+        elif i == 2:
+            botonF.ficha = 3
+            botonF.rect.x = 680
+            botonF.rect.y = 500
+        elif i == 3:
+            botonF.ficha = 4
+            botonF.rect.x = 780
+            botonF.rect.y = 500
+        botonesFichas.add(botonF)
+        todos.add(botonF)
 
     botonLanzar = botonLanzamiento()
     botones.add(botonLanzar)
@@ -316,5 +365,7 @@ if __name__ == '__main__':
             pantalla.blit(fuenteDados.render(str(dado.valor), False, [0,0,0]), dado.rect.center)
         for b in botones:
             pantalla.blit(fuenteDados.render("Lanzar", False, [0,0,0]), b.rect.topleft)
-        
+        for b in botonesFichas:
+            pantalla.blit(fuenteDados.render(str(b.ficha), False, [0,0,0]), b.rect.topleft)
+
         pygame.display.flip()
