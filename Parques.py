@@ -262,6 +262,7 @@ if __name__ == '__main__':
     botonLanzar = botonLanzamiento()
     botones.add(botonLanzar)
     todos.add(botonLanzar)
+    presada = False
     fin = False
     while not fin:
         for event in pygame.event.get():
@@ -278,6 +279,10 @@ if __name__ == '__main__':
                             if clicD == 1:
                                 dadosT = lanzamientoDados(False, 3)
                                 print (dadosT)
+                                if dadosT[0] == dadosT[1]:
+                                    presada = True
+                                else:
+                                    presada = False
                                 for dado in dados:
                                     pantalla.blit(fuenteDados.render(str(dado.valor), False, [220,220,220]), dado.rect.center)
                                 pygame.display.flip()
@@ -293,9 +298,9 @@ if __name__ == '__main__':
                                     d.updateValor(dadosT[1])
 
                         clicD = 0
-
-
+        #Se dibujan casillas
         grupo.draw(pantalla)
+
         for i in blancos:
             pantalla.blit(fuente.render(str(i.id_obj),False,[0,0,0]),i.rect.center)
         for i in fichos:
@@ -305,11 +310,11 @@ if __name__ == '__main__':
         #Dados pos
         pygame.draw.rect(pantalla, [0,0,0], [680, 20, 150, 150], 4)
         pygame.draw.rect(pantalla, [0,0,0], [870, 20, 150, 150], 4)
+
         #Boton lanzar
         pygame.draw.rect(pantalla, [0,0,0], [770, 200, 150, 50], 4)
 
-        
-
+        #Se dibujan dados y boton de lanzamiento
         todos.draw(pantalla)
 
         for dado in dados:
