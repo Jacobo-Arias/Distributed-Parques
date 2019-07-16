@@ -248,7 +248,20 @@ if __name__ == '__main__':
 
     pygame.draw.rect(pantalla,[255,255,255],[[650,0],[850,650]])
     pygame.draw.line(pantalla,[0,0,0],[650,0],[650,650],2)
+    for i in range (0, 2):
+        dado = Dado(i+1)
+        if i == 0:
+            dado.rect.x = 680
+            dado.rect.y = 20
+        else:
+            dado.rect.x = 870
+            dado.rect.y = 20
+        dados.add(dado)
+        todos.add(dado)
 
+    botonLanzar = botonLanzamiento()
+    botones.add(botonLanzar)
+    todos.add(botonLanzar)
     fin = False
     while not fin:
         for event in pygame.event.get():
@@ -265,12 +278,18 @@ if __name__ == '__main__':
                             if clicD == 1:
                                 dadosT = lanzamientoDados(False, 3)
                                 print (dadosT)
-                                #pantalla.fill([0,0,0])
+                                for dado in dados:
+                                    pantalla.blit(fuenteDados.render(str(dado.valor), False, [220,220,220]), dado.rect.center)
+                                pygame.display.flip()
+
                             for d in dados:
                                 pantalla.blit(fuenteDados.render(str(dado.valor), False, [220, 220, 220]), dado.rect.center)
+                                d.image.fill([220,220,220])
                                 if d.numeroDado == 1:
+                                    d.valor = dadosT[0]
                                     d.updateValor(dadosT[0])
                                 else:
+                                    d.valor = dadosT[1]
                                     d.updateValor(dadosT[1])
 
                         clicD = 0
@@ -288,23 +307,8 @@ if __name__ == '__main__':
         pygame.draw.rect(pantalla, [0,0,0], [870, 20, 150, 150], 4)
         #Boton lanzar
         pygame.draw.rect(pantalla, [0,0,0], [770, 200, 150, 50], 4)
-        
-        for i in range (0, 2):
-            dado = Dado(i+1)
-            if i == 0:
-                dado.rect.x = 680
-                dado.rect.y = 20
-            else:
-                dado.rect.x = 870
-                dado.rect.y = 20
-            dados.add(dado)
-            todos.add(dado)
-        
 
-
-        botonLanzar = botonLanzamiento()
-        botones.add(botonLanzar)
-        todos.add(botonLanzar)
+        
 
         todos.draw(pantalla)
 
