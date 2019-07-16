@@ -1,5 +1,6 @@
 import pygame
 import random
+import datetime
 Ancho=650
 Alto=650
 VERDE=[0,255,0]
@@ -57,13 +58,6 @@ class botonLanzamiento (pygame.sprite.Sprite):
         self.rect.y = 200
         self.presionado = False
         self.texto = "Lanzar"
-        '''
-        self.habilitado = True
-        textsurface = FONT.render(element, True, FONT_COLOR)
-        textrect = textsurface.get_rect(center=self.image.get_rect().center)
-        self.image.blit(textsurface, textrect)
-        self.rect = self.image.get_rect(center=pos)
-        '''
 
     def presionarBoton(self):
         if self.presionado:
@@ -84,8 +78,6 @@ def lanzamientoDados (inicioJuego, fichasRestantes):
             dado2 = 0
     return dado1, dado2
 
-
-
 def CreacionFichos():
     aux = [[1,69,75],[18,76,82],[52,90,96],[35,83,89]]
     lista = []
@@ -96,7 +88,6 @@ def CreacionFichos():
             lista.append(ficha)
     print (len(lista))
     return lista
-
 
 def torre(este): #creacion base torres cielo
     if este == 0:
@@ -265,6 +256,9 @@ if __name__ == '__main__':
     presada = False
     fin = False
     while not fin:
+        pantalla.fill([255,255,255])
+        tiempo = datetime.datetime.now().time()
+        pantalla.blit(fuenteDados.render(str(tiempo), False, [0,0,0]), [700, 600])
         for event in pygame.event.get():
             pos=pygame.mouse.get_pos()
             #Eventos dentro del juego
@@ -279,6 +273,7 @@ if __name__ == '__main__':
                             if clicD == 1:
                                 dadosT = lanzamientoDados(False, 3)
                                 print (dadosT)
+                                posiblesLanzamientos =[dadosT[0] + dadosT[1], dadosT[0], dadosT[1]]
                                 if dadosT[0] == dadosT[1]:
                                     presada = True
                                 else:
@@ -321,5 +316,5 @@ if __name__ == '__main__':
             pantalla.blit(fuenteDados.render(str(dado.valor), False, [0,0,0]), dado.rect.center)
         for b in botones:
             pantalla.blit(fuenteDados.render("Lanzar", False, [0,0,0]), b.rect.topleft)
-
+        
         pygame.display.flip()
