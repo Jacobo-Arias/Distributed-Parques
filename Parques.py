@@ -64,10 +64,10 @@ class botonLanzamiento (pygame.sprite.Sprite):
         self.image.blit(textsurface, textrect)
         self.rect = self.image.get_rect(center=pos)
         '''
-    
+
     def presionarBoton(self):
         if self.presionado:
-         pass
+            pass
 
 def lanzamientoDados (inicioJuego, fichasRestantes):
     lanzamientos = 1
@@ -133,9 +133,9 @@ def cuadros():
             usuario.image = pygame.image.load("cielo.png")
         lista.append(usuario)
         bases.append(usuario)
-    
-    for j in range (8):  #Creacion cuadros 
-        if j in [0,2,4,6]: 
+
+    for j in range (8):  #Creacion cuadros
+        if j in [0,2,4,6]:
             aux = torre(j)
             blancos.append(aux)
             lista.append(aux)
@@ -184,7 +184,7 @@ def cuadros():
                 k = 2
                 usuario.rect.x = Ancho-287
                 usuario.rect.y = 189-i*27
-            
+
             if j in [0,2,4,6]:
                 if i == 4: usuario.image.fill(colores[k])
                 else: usuario.image.fill(BLANCO)
@@ -197,30 +197,30 @@ def cuadros():
 
     for j in range(4): #creacion torres al cielo
         if j in [0,2]: size = [77,25]
-        else: size = [25,77] 
+        else: size = [25,77]
         for i in range(7):
             usuario = Bloque(size)
 
-            if j == 0: #*arriba 
+            if j == 0: #*arriba
                 usuario.image.fill(VERDE)
                 usuario.rect.x = 287
                 usuario.rect.y = i*27+27
-            
-            elif j == 1: #?izquierda 
+
+            elif j == 1: #?izquierda
                 usuario.image.fill(AZUL)
                 usuario.rect.y = 287
                 usuario.rect.x = 27+i*27
 
-            elif j == 2:#!abajo 
+            elif j == 2:#!abajo
                 usuario.image.fill(ROJO)
                 usuario.rect.x = 287
                 usuario.rect.y = Alto-(i*27)-52
-        
+
             elif j == 3:#TODO: derecha arriba
                 usuario.image.fill(AMARILLO)
                 usuario.rect.y = 287
                 usuario.rect.x = Alto-(i*27+52)
-            
+
             lista.append(usuario)
             blancos.append(usuario)
 
