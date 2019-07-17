@@ -35,7 +35,6 @@ class Ficho(pygame.sprite.Sprite):
         self.id = nume
         self.rect = self.image.get_rect()
         self.nume = nume
-        self.safe = True
         self.pos = None
         self.cielo = cielo
 
