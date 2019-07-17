@@ -114,13 +114,15 @@ def lanzamientoDados (inicioJuego, fichasRestantes):
 def CreacionFichos():
     aux = [[1,69,75],[18,76,82],[52,90,96],[35,83,89]]
     lista = []
+    completa = []
     for j in range (4):
         for i in range (4):
             ficha = Ficho([colores[j],i+1],aux[j])
             ficha.rect.center = [j*50+50,i*50+50]
             lista.append(ficha)
+        completa.append(lista)
     print (len(lista))
-    return lista
+    return completa
 
 def torre(este): #creacion base torres cielo
     if este == 0:
@@ -415,6 +417,12 @@ if __name__ == '__main__':
 		        if socks == server:
 			        mensaje = socks.recv(1024)
                     mensaje = mensaje.split("#")
+                    aux = mensaje[3]
+                    mensaje[3] = mensaje[2]
+                    mensaje[2] = aux
+                    for i in range(0,4):
+                        for j in range(0,4):
+                            fichos[i][j].pos=j
 			        if mensaje[0]=="G":	
 				        juego=False
 				        break
@@ -423,7 +431,8 @@ if __name__ == '__main__':
 
             for i in blancos:
                 pantalla.blit(fuente.render(str(i.id_obj),False,[0,0,0]),i.rect.center)
-            for i in fichos:
+            for j in fichos:
+                for i in j:
                 pygame.draw.circle(pantalla,i.color,i.rect.center,9)
                 pantalla.blit(fuente.render(str(i.nume[1]),False,[255,255,255]),i.rect)
 
