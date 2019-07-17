@@ -387,13 +387,9 @@ if __name__ == '__main__':
                         for b in botones:
                             if b.rect.collidepoint(pos):
                                 if clicD == 1:
-                                    dadosT = lanzamientoDados(False, 3)
+                                    dadosT = lanzamientoDados(False, 1)
                                     print (dadosT)
                                     posiblesLanzamientos =[dadosT[0] + dadosT[1], dadosT[0], dadosT[1]]
-                                    if dadosT[0] == dadosT[1]:
-                                        presada = True
-                                    else:
-                                        presada = False
                                     for dado in dados:
                                         pantalla.blit(fuenteDados.render(str(dado.valor), False, [220,220,220]), dado.rect.center)
                                     pygame.display.flip()
@@ -424,6 +420,7 @@ if __name__ == '__main__':
                             fichos[i][j].pos=j
                     if mensaje[0]=="G":	
 				        juego=False
+                        fin = True
                     break
             #Se dibujan casillas
             grupo.draw(pantalla)
