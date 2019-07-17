@@ -347,7 +347,7 @@ if __name__ == '__main__':
     dados.add(dado)
     todos.add(dado)
 
-    bofonF = creabotones()
+    botonF = creabotones()
     botonesFichas.add(botonF)
     todos.add(botonF)
 
@@ -407,15 +407,14 @@ if __name__ == '__main__':
                                     else:
                                         d.valor = dadosT[1]
                                         d.updateValor(dadosT[1])
-
                             clicD = 0
             
             #start_new_thread(lanzar,())
 	        sockets= [sys.stdin, server]
 	        leidos,escrito, error = select.select(sockets,[],[])
-	        for socks in leidos:
-		        if socks == server:
-			        mensaje = socks.recv(1024)
+            for socks in leidos:
+                if socks == server:
+                    mensaje = socks.recv(1024)
                     mensaje = mensaje.split("#")
                     aux = mensaje[3]
                     mensaje[3] = mensaje[2]
@@ -423,18 +422,19 @@ if __name__ == '__main__':
                     for i in range(0,4):
                         for j in range(0,4):
                             fichos[i][j].pos=j
-			        if mensaje[0]=="G":	
+                    if mensaje[0]=="G":	
 				        juego=False
-				        break
+                    break
             #Se dibujan casillas
             grupo.draw(pantalla)
-
+            
+             
             for i in blancos:
                 pantalla.blit(fuente.render(str(i.id_obj),False,[0,0,0]),i.rect.center)
             for j in fichos:
                 for i in j:
-                pygame.draw.circle(pantalla,i.color,i.rect.center,9)
-                pantalla.blit(fuente.render(str(i.nume[1]),False,[255,255,255]),i.rect)
+                    pygame.draw.circle(pantalla,i.color,i.rect.center,9)
+                    pantalla.blit(fuente.render(str(i.nume[1]),False,[255,255,255]),i.rect)
 
             #Dados pos
             pygame.draw.rect(pantalla, [0,0,0], [680, 20, 150, 150], 4)
