@@ -172,22 +172,13 @@ def estado_tablero():
 	mensaje=""
 	for n in Game.jugador1:
 		mensaje+= str(n)+" "
-	mensaje=mensaje[:-1]
-	mensaje+="#"
 	for n in Game.jugador2:
 		mensaje+= str(n)+" "
-	mensaje=mensaje[:-1]
-	mensaje+="#"
 	for n in Game.jugador3:
 		mensaje+= str(n)+" "
-	mensaje=mensaje[:-1]
-	mensaje+="#"
 	for n in Game.jugador4:
 		mensaje+= str(n)+" "
 	mensaje=mensaje[:-1]
-	mensaje+="#"
-	now = datetime.datetime.now()
-	mensaje+=str(now.hour)+":"+str(now.minute)
 	print mensaje
 	return mensaje
 

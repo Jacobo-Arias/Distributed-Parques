@@ -266,6 +266,7 @@ def creadados():
             dado.rect.x = 870
             dado.rect.y = 20
         result.append(dado)
+    return result
         
 def creabotones():
     salida = []
@@ -288,6 +289,7 @@ def creabotones():
             botonF.rect.x = 780
             botonF.rect.y = 500
         salida.append(botonF)
+    return salida
 
 
 def armar(jugada):
@@ -413,7 +415,7 @@ if __name__ == '__main__':
 	        for socks in leidos:
 		        if socks == server:
 			        mensaje = socks.recv(1024)
-                    mensaje
+                    mensaje = mensaje.split("#")
 			        if mensaje[0]=="G":	
 				        juego=False
 				        break
