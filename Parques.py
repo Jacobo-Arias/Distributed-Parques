@@ -1,6 +1,13 @@
 import pygame
 import random
 import datetime
+import socket
+import select
+import sys
+import os
+from thread import *
+import random
+
 Ancho=650
 Alto=650
 VERDE=[0,255,0]
@@ -248,6 +255,72 @@ def cuadros():
 
     return lista,bases,blancos
 
+def creadados():
+    result = []
+    for i in range (0, 2):
+        dado = Dado(i+1)
+        if i == 0:
+            dado.rect.x = 680
+            dado.rect.y = 20
+        else:
+            dado.rect.x = 870
+            dado.rect.y = 20
+        result.append(dado)
+        
+def creabotones():
+    salida = []
+    for i in range (0,5):
+        botonF = botonFicha(i+1)
+        if i == 0:
+            botonF.ficha = 1
+            botonF.rect.x = 680
+            botonF.rect.y = 400
+        elif i == 1:
+            botonF.ficha = 2
+            botonF.rect.x = 780
+            botonF.rect.y = 400
+        elif i == 2:
+            botonF.ficha = 3
+            botonF.rect.x = 680
+            botonF.rect.y = 500
+        elif i == 3:
+            botonF.ficha = 4
+            botonF.rect.x = 780
+            botonF.rect.y = 500
+        salida.append(botonF)
+
+
+def armar(jugada):
+	mensaje=numero+":"
+	for n in jugada:
+		mensaje+=str(n)+" "
+	return mensaje[:-1]
+
+def lanzar():
+	global uso
+	if not uso:
+		uso=True
+		x=raw_input("Desea lanzar los dados? y/n")
+		if x=="y":
+			jugada=[0,0,0,0]
+			d1=random.randint(1,6)
+			d2=random.randint(1,6)
+			print d1,d2
+			for n in range(4):
+				jugada[n]=input("Cuanto quiere mover la ficha {}".format(n+1))
+			mensaje=armar(jugada)
+			server.send(mensaje)
+		uso=False
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.connect(("localhost", 8000))
+
+os.system('cls' if os.name == 'nt' else 'clear')
+nombre = raw_input("Ingresa tu nombre:")
+server.send(":"+nombre)
+numero="0"
+juego=False
+uso=False
 
 if __name__ == '__main__':
     pygame.init()
@@ -267,105 +340,109 @@ if __name__ == '__main__':
 
     pygame.draw.rect(pantalla,[255,255,255],[[650,0],[850,650]])
     pygame.draw.line(pantalla,[0,0,0],[650,0],[650,650],2)
-    for i in range (0, 2):
-        dado = Dado(i+1)
-        if i == 0:
-            dado.rect.x = 680
-            dado.rect.y = 20
-        else:
-            dado.rect.x = 870
-            dado.rect.y = 20
-        dados.add(dado)
-        todos.add(dado)
+    dado = creadados()
+    dados.add(dado)
+    todos.add(dado)
 
-    for i in range (0,5):
-        botonF = botonFicha(i+1)
-        if i == 0:
-            botonF.ficha = 1
-            botonF.rect.x = 680
-            botonF.rect.y = 400
-        elif i == 1:
-            botonF.ficha = 2
-            botonF.rect.x = 780
-            botonF.rect.y = 400
-        elif i == 2:
-            botonF.ficha = 3
-            botonF.rect.x = 680
-            botonF.rect.y = 500
-        elif i == 3:
-            botonF.ficha = 4
-            botonF.rect.x = 780
-            botonF.rect.y = 500
-        botonesFichas.add(botonF)
-        todos.add(botonF)
+    bofonF = creabotones()
+    botonesFichas.add(botonF)
+    todos.add(botonF)
 
     botonLanzar = botonLanzamiento()
     botones.add(botonLanzar)
     todos.add(botonLanzar)
     presada = False
     fin = False
-    while not fin:
-        pantalla.fill([255,255,255])
-        tiempo = datetime.datetime.now().time()
-        pantalla.blit(fuenteDados.render(str(tiempo), False, [0,0,0]), [700, 600])
-        for event in pygame.event.get():
-            pos=pygame.mouse.get_pos()
-            #Eventos dentro del juego
-            if event.type == pygame.QUIT:
-                fin = True
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                    print ("Clic")
-                    clicD = 1
-                    for b in botones:
-                        if b.rect.collidepoint(pos):
-                            if clicD == 1:
-                                dadosT = lanzamientoDados(False, 3)
-                                print (dadosT)
-                                posiblesLanzamientos =[dadosT[0] + dadosT[1], dadosT[0], dadosT[1]]
-                                if dadosT[0] == dadosT[1]:
-                                    presada = True
-                                else:
-                                    presada = False
-                                for dado in dados:
-                                    pantalla.blit(fuenteDados.render(str(dado.valor), False, [220,220,220]), dado.rect.center)
-                                pygame.display.flip()
+    while not juego:
+        sockets= [sys.stdin, server]
+        leidos,escrito, error = select.select(sockets,[],[])
+        for socks in leidos:
+            if socks == server:
+                mensaje = socks.recv(1024)
+                os.system('cls' if os.name == 'nt' else 'clear')
+                if mensaje.count("#")>0:
+                    print("Mi numero es #"+mensaje[-1])
+                    numero=mensaje[-1]
+                    juego=True
+                    break
+                print mensaje
+    if juego:
+        while not fin:
+            pantalla.fill([255,255,255])
+            tiempo = datetime.datetime.now().time()
+            pantalla.blit(fuenteDados.render(str(tiempo), False, [0,0,0]), [700, 600])
+            for event in pygame.event.get():
+                pos=pygame.mouse.get_pos()
+                #Eventos dentro del juego
+                if event.type == pygame.QUIT:
+                    fin = True
 
-                            for d in dados:
-                                pantalla.blit(fuenteDados.render(str(dado.valor), False, [220, 220, 220]), dado.rect.center)
-                                d.image.fill([220,220,220])
-                                if d.numeroDado == 1:
-                                    d.valor = dadosT[0]
-                                    d.updateValor(dadosT[0])
-                                else:
-                                    d.valor = dadosT[1]
-                                    d.updateValor(dadosT[1])
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                        print ("Clic")
+                        clicD = 1
+                        for b in botones:
+                            if b.rect.collidepoint(pos):
+                                if clicD == 1:
+                                    dadosT = lanzamientoDados(False, 3)
+                                    print (dadosT)
+                                    posiblesLanzamientos =[dadosT[0] + dadosT[1], dadosT[0], dadosT[1]]
+                                    if dadosT[0] == dadosT[1]:
+                                        presada = True
+                                    else:
+                                        presada = False
+                                    for dado in dados:
+                                        pantalla.blit(fuenteDados.render(str(dado.valor), False, [220,220,220]), dado.rect.center)
+                                    pygame.display.flip()
 
-                        clicD = 0
-        #Se dibujan casillas
-        grupo.draw(pantalla)
+                                for d in dados:
+                                    pantalla.blit(fuenteDados.render(str(dado.valor), False, [220, 220, 220]), dado.rect.center)
+                                    d.image.fill([220,220,220])
+                                    if d.numeroDado == 1:
+                                        d.valor = dadosT[0]
+                                        d.updateValor(dadosT[0])
+                                    else:
+                                        d.valor = dadosT[1]
+                                        d.updateValor(dadosT[1])
 
-        for i in blancos:
-            pantalla.blit(fuente.render(str(i.id_obj),False,[0,0,0]),i.rect.center)
-        for i in fichos:
-            pygame.draw.circle(pantalla,i.color,i.rect.center,9)
-            pantalla.blit(fuente.render(str(i.nume[1]),False,[255,255,255]),i.rect)
+                            clicD = 0
+            
+            #start_new_thread(lanzar,())
+	        sockets= [sys.stdin, server]
+	        leidos,escrito, error = select.select(sockets,[],[])
+	        for socks in leidos:
+		        if socks == server:
+			        mensaje = socks.recv(1024)
+                    mensaje
+			        if mensaje[0]=="G":	
+				        juego=False
+				        break
+            #Se dibujan casillas
+            grupo.draw(pantalla)
 
-        #Dados pos
-        pygame.draw.rect(pantalla, [0,0,0], [680, 20, 150, 150], 4)
-        pygame.draw.rect(pantalla, [0,0,0], [870, 20, 150, 150], 4)
+            for i in blancos:
+                pantalla.blit(fuente.render(str(i.id_obj),False,[0,0,0]),i.rect.center)
+            for i in fichos:
+                pygame.draw.circle(pantalla,i.color,i.rect.center,9)
+                pantalla.blit(fuente.render(str(i.nume[1]),False,[255,255,255]),i.rect)
 
-        #Boton lanzar
-        pygame.draw.rect(pantalla, [0,0,0], [770, 200, 150, 50], 4)
+            #Dados pos
+            pygame.draw.rect(pantalla, [0,0,0], [680, 20, 150, 150], 4)
+            pygame.draw.rect(pantalla, [0,0,0], [870, 20, 150, 150], 4)
 
-        #Se dibujan dados y boton de lanzamiento
-        todos.draw(pantalla)
+            #Boton lanzar
+            pygame.draw.rect(pantalla, [0,0,0], [770, 200, 150, 50], 4)
 
-        for dado in dados:
-            pantalla.blit(fuenteDados.render(str(dado.valor), False, [0,0,0]), dado.rect.center)
-        for b in botones:
-            pantalla.blit(fuenteDados.render("Lanzar", False, [0,0,0]), b.rect.topleft)
-        for b in botonesFichas:
-            pantalla.blit(fuenteDados.render(str(b.ficha), False, [0,0,0]), b.rect.topleft)
+            #Se dibujan dados y boton de lanzamiento
+            todos.draw(pantalla)
 
-        pygame.display.flip()
+            for dado in dados:
+                pantalla.blit(fuenteDados.render(str(dado.valor), False, [0,0,0]), dado.rect.center)
+            for b in botones:
+                pantalla.blit(fuenteDados.render("Lanzar", False, [0,0,0]), b.rect.topleft)
+            for b in botonesFichas:
+                pantalla.blit(fuenteDados.render(str(b.ficha), False, [0,0,0]), b.rect.topleft)
+
+            pygame.display.flip()
+server.close()
+            
