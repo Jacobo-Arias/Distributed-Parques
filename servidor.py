@@ -26,7 +26,10 @@ class Tablero():
 		for n in range(4):
 			if quien[n]>0:
 				jugadas=self.cielo(jugador, jugadas)
-				quien[n]+=int(jugadas[n])
+				if int(jugadas[n])>0:
+					quien[n]+=int(jugadas[n])
+					quien[n]=(quien[n]%69)
+					print quien[n], "PELIGRO"
 				self.comer(quien,jugador)
 				print("aqui")
 				self.ganadas(jugador)
@@ -62,6 +65,7 @@ class Tablero():
 	def cielo(self,jugador, jugadas):
 		if jugador=="1":
 			for n in range(4):
+				print("que hago")
 				if self.jugador1[n]<69 and self.jugador1[n]+int(jugadas[n])>68: #Poner en la entrada al cielo
 					jugadas[n]=str(int(jugadas[n])-(69-self.jugador1[n]))
 					self.jugador1[n]=1
@@ -70,6 +74,8 @@ class Tablero():
 					print("aqui que")
 					self.jugador1[n]= 69 #numero del cielo verde
 					jugadas[n]= str(int(jugadas[n])-1)
+					self.jugador1[n]+=jugadas[n]
+					jugadas[n]=0
 		if jugador=="2":
 			for n in range(4):
 				if self.jugador2[n]<18 and self.jugador2[n]+int(jugadas[n])>17:
@@ -77,7 +83,10 @@ class Tablero():
 					self.jugador2[n]=18
 				if self.jugador2[n]==18 and int(jugadas[n])>=1:
 					self.jugador2[n]= 76 #numero del cielo azul
+					print self.jugador2
 					jugadas[n]= str(int(jugadas[n])-1)
+					self.jugador2[n]+=jugadas[n]
+					jugadas[n]=0
 		if jugador=="3":
 			for n in range(4):
 				if self.jugador3[n]<35 and self.jugador3[n]+int(jugadas[n])>34: #Poner en la entrada al cielo
@@ -86,6 +95,8 @@ class Tablero():
 				if self.jugador3[n]==35 and int(jugadas[n])>=1: #entrar al cielo
 					self.jugador3[n]= 83 #numero del cielo rojo
 					jugadas[n]= str(int(jugadas[n])-1)
+					self.jugador3[n]+=jugadas[n]
+					jugadas[n]=0
 		if jugador=="4":
 			for n in range(4):
 				if self.jugador4[n]<52 and self.jugador4[n]+int(jugadas[n])>51: #Poner en la entrada al cielo
@@ -94,6 +105,8 @@ class Tablero():
 				if self.jugador4[n]==52 and int(jugadas[n])>=1: #entrar al cielo
 					self.jugador4[n]= 90 #numero del cielo amarillo
 					jugadas[n]= str(int(jugadas[n])-1)
+					self.jugador4[n]+=jugadas[n]
+					jugadas[n]=0
 		return jugadas
 
 	def sacar(self,jugador):
@@ -246,7 +259,7 @@ def clienteHilo(conn, addr):
 				if not Game.carcel(Game.jugador1):
 					intentos=0
 				intentos-=1
-				if not Game.presadas(move) and intentos==0:
+				if not Game.presadas(move) and intentos<=0:
 					turno=2
 					intentos=3
 				Game.mover(mensaje[0], move)
@@ -262,7 +275,7 @@ def clienteHilo(conn, addr):
 				if not Game.carcel(Game.jugador2):
 					intentos=0
 				intentos-=1
-				if not Game.presadas(move)and intentos==0:
+				if not Game.presadas(move)and intentos<=0:
 					turno=3
 					intentos=3
 				Game.mover(mensaje[0], move)
@@ -275,7 +288,7 @@ def clienteHilo(conn, addr):
 				if not Game.carcel(Game.jugador3):
 					intentos=0
 				intentos-=1
-				if not Game.presadas(move)and intentos==0:
+				if not Game.presadas(move)and intentos<=0:
 					turno=4
 					intentos=3
 				Game.mover(mensaje[0], move)
@@ -288,7 +301,7 @@ def clienteHilo(conn, addr):
 				if not Game.carcel(Game.jugador4):
 					intentos=0
 				intentos-=1
-				if not Game.presadas(move)and intentos==0:
+				if not Game.presadas(move)and intentos<=0:
 					turno=1
 					intentos=3
 				Game.mover(mensaje[0], move)
