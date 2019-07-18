@@ -9,10 +9,10 @@ seguros=[1,6,13,18,23,30,35,40,47,52,57,64]
 class Tablero():
 	def __init__(self):
 		#Todas las fichas empiezan el la carcel
-		self.jugador1=[0,0,0,0] #Verdes
-		self.jugador2=[0,0,0,0] #Azules
-		self.jugador3=[0,0,0,0] #Rojas
-		self.jugador4=[0,0,0,0] #Amarillas
+		self.jugador1=[1,2,3,4] #Verdes
+		self.jugador2=[5,6,7,8] #Azules
+		self.jugador3=[9,10,11,12] #Rojas
+		self.jugador4=[13,14,15,16] #Amarillas
 		#0 significa carcel
 		#-1 significa cielo
 		#en otro caso es el numero de la casilla

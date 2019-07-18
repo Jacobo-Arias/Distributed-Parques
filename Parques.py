@@ -37,7 +37,7 @@ class Ficho(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.nume = nume
         self.safe = True
-        self.pos = None
+        self.pos = 0
         self.cielo = cielo
 
 class botonFicha (pygame.sprite.Sprite):
@@ -450,8 +450,9 @@ if __name__ == '__main__':
                     aux = mensaje[3]
                     mensaje[3] = mensaje[2]
                     mensaje[2] = aux
-                    for i in range (0, 4):
-                        fichos[i][j].pos = j
+                    for i in range (4):
+                        for j in range(4):
+                            fichos[i][j].pos = mensaje[i][j]
                     if mensaje[0] == 'G':
                         juego = False
                         fin = True
@@ -459,11 +460,33 @@ if __name__ == '__main__':
             #Se dibujan casillas
             grupo.draw(pantalla)
 
-            for i in blancos:
-                pantalla.blit(fuente.render(str(i.id_obj),False,[0,0,0]),i.rect.center)
-            for i in fichos:
-                pygame.draw.circle(pantalla,i.color,i.rect.center,9)
-                pantalla.blit(fuente.render(str(i.nume[1]),False,[255,255,255]),i.rect)
+            for j in blancos:
+                pantalla.blit(fuente.render(str(j.id_obj),False,[0,0,0]),j.rect.center)
+                for fichito in fichos:
+                    for i in fichito:
+                        if not i.pos in [-1,0]:
+                            if j.id_obj == i.pos:
+                                i.rect.center = j.rect.center
+                                print i.pos
+
+                        elif i.pos == 0:
+                            if i.id[0] == VERDE:
+                                i.rect.center = [centros[0][0],centros[0][1]-75+i.id[1]*25]
+                            elif i.id[0] == AZUL:
+                                i.rect.center = [centros[1][0],centros[1][1]-75+i.id[1]*25]
+                            elif i.id[0] == AMARILLO:
+                                i.rect.center = [centros[2][0],centros[2][1]-75+i.id[1]*25]
+                            elif i.id[0] == ROJO:
+                                i.rect.center = [centros[3][0],centros[3][1]-75+i.id[1]*25]
+
+                        elif i.pos == -1:
+                            i.rect.center = [-30,-30]
+            
+            for fichitos in fichos:
+                for i in fichitos:
+                    pygame.draw.circle(pantalla,i.color,i.rect.center,9)
+                    pantalla.blit(fuente.render(str(i.nume[1]),False,[255,255,255]),i.rect)
+
 
             #Dados pos
             pygame.draw.rect(pantalla, [0,0,0], [680, 20, 150, 150], 4)
