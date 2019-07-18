@@ -28,7 +28,7 @@ def lanzar():
 		uso=False
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.connect(("localhost", 8000))
+server.connect(("192.168.9.17", 8000))
 
 os.system('cls' if os.name == 'nt' else 'clear')
 nombre = raw_input("Ingresa tu nombre:")

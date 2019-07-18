@@ -9,6 +9,8 @@ import thread
 from thread import *
 import random
 
+#juego de parques distribuido
+
 Ancho=650
 Alto=650
 VERDE=[0,255,0]
