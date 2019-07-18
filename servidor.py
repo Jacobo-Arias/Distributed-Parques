@@ -9,10 +9,10 @@ seguros=[1,6,13,18,23,30,35,40,47,52,57,64]
 class Tablero():
 	def __init__(self):
 		#Todas las fichas empiezan el la carcel
-		self.jugador1=[1,2,3,4] #Verdes
-		self.jugador2=[5,6,7,8] #Azules
-		self.jugador3=[9,10,11,12] #Rojas
-		self.jugador4=[13,14,15,16] #Amarillas
+		self.jugador1=[-1,0,0,0] #Verdes
+		self.jugador2=[0,0,0,0] #Azules
+		self.jugador3=[0,0,0,0] #Rojas
+		self.jugador4=[0,0,0,0] #Amarillas
 		#0 significa carcel
 		#-1 significa cielo
 		#en otro caso es el numero de la casilla
@@ -32,7 +32,6 @@ class Tablero():
 				self.ganadas(jugador)
 				print("salio")
 
-#---------------------------------------------------------------------------------------CORREGIR
 	def ganadas(self,jugador):
 		for n in range(4):
 			if jugador=="1" and self.jugador1[n]>75:
@@ -119,7 +118,12 @@ class Tablero():
 					self.jugador4[n] = 57
 	#Salida de las amarillas
 
-#---------------------------------------------------------------------------------------CORREGIR
+	def carcel(self, jugador):
+		for n in jugador:
+			if n!=-1 and n!=0:
+				return False
+		return True
+
 	def quien(self,jugador):
 		if jugador=="1":
 			return self.jugador1
@@ -172,16 +176,22 @@ def estado_tablero():
 	mensaje=""
 	for n in Game.jugador1:
 		mensaje+= str(n)+" "
-		mensaje[-1]='#'
+	mensaje=mensaje[:-1]
+	mensaje+="#"
 	for n in Game.jugador2:
 		mensaje+= str(n)+" "
-		mensaje[-1]='#'
+	mensaje=mensaje[:-1]
+	mensaje+="#"
 	for n in Game.jugador3:
 		mensaje+= str(n)+" "
-		mensaje[-1]='#'
+	mensaje=mensaje[:-1]
+	mensaje+="#"
 	for n in Game.jugador4:
 		mensaje+= str(n)+" "
 	mensaje=mensaje[:-1]
+	mensaje+="#"
+	now = datetime.datetime.now()
+	mensaje+=str(now.hour)+":"+str(now.minute)
 	print mensaje
 	return mensaje
 
@@ -217,6 +227,7 @@ def clienteHilo(conn, addr):
 
 	global turno
 	global uso
+	global intentos
 
 	while True:
 		if ganador()!="nadie":
@@ -233,8 +244,12 @@ def clienteHilo(conn, addr):
 				#Descifro el mensaje
 				uso=False
 				move = mensaje.split(":")[1].split(" ")
-				if not Game.presadas(move):
+				if not Game.carcel(Game.jugador1):
+					intentos=0
+				intentos-=1
+				if not Game.presadas(move) and intentos==0:
 					turno=2
+					intentos=3
 				Game.mover(mensaje[0], move)
 				uso=True
 				print estado_tablero()
@@ -245,8 +260,12 @@ def clienteHilo(conn, addr):
 				print "aqui"
 				uso=False
 				move = mensaje.split(":")[1].split(" ")
-				if not Game.presadas(move):
+				if not Game.carcel(Game.jugador2):
+					intentos=0
+				intentos-=1
+				if not Game.presadas(move)and intentos==0:
 					turno=3
+					intentos=3
 				Game.mover(mensaje[0], move)
 				uso=True
 				broadcast(estado_tablero())
@@ -254,8 +273,12 @@ def clienteHilo(conn, addr):
 				#Descifro el mensaje
 				uso=False
 				move = mensaje.split(":")[1].split(" ")
-				if not Game.presadas(move):
+				if not Game.carcel(Game.jugador3):
+					intentos=0
+				intentos-=1
+				if not Game.presadas(move)and intentos==0:
 					turno=4
+					intentos=3
 				Game.mover(mensaje[0], move)
 				uso=True
 				broadcast(estado_tablero())
@@ -263,8 +286,12 @@ def clienteHilo(conn, addr):
 				#Descifro el mensaje
 				uso=False
 				move = mensaje.split(":")[1].split(" ")
-				if not Game.presadas(move):
+				if not Game.carcel(Game.jugador4):
+					intentos=0
+				intentos-=1
+				if not Game.presadas(move)and intentos==0:
 					turno=1
+					intentos=3
 				Game.mover(mensaje[0], move)
 				uso=True
 				broadcast(estado_tablero())
@@ -296,14 +323,16 @@ def remove(conexion):
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-server.bind(("localhost", 8000))
+server.bind(("192.168.1.70", 8000))
 server.listen(5)
 clientes = []
 listaNombres = [None,None,None,None]
 Game=Tablero()
 finalserver=False
+
 turno=1
 uso=True
+intentos=3
 
 while not finalserver:
 	conn, addr = server.accept()
