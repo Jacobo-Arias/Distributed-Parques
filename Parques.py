@@ -308,7 +308,7 @@ def lanzar():
 			jugada=[0,0,0,0]
 			d1=random.randint(1,6)
 			d2=random.randint(1,6)
-			print d1,d2
+			print (d1,d2)
 			for n in range(4):
 				jugada[n]=input("Cuanto quiere mover la ficha {}".format(n+1))
 			mensaje=armar(jugada)
@@ -369,7 +369,7 @@ if __name__ == '__main__':
                     numero=mensaje[-1]
                     juego=True
                     break
-                print mensaje
+                print (mensaje)
     if juego:
         while not fin:
             pantalla.fill([255,255,255])
@@ -452,4 +452,3 @@ if __name__ == '__main__':
 
             pygame.display.flip()
 server.close()
-            
