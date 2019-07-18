@@ -134,13 +134,15 @@ def lanzamientoDados (inicioJuego, fichasRestantes):
 def CreacionFichos():
     aux = [[1,69,75],[18,76,82],[52,90,96],[35,83,89]]
     lista = []
+    completa = []
     for j in range (4):
         for i in range (4):
             ficha = Ficho([colores[j],i+1],aux[j])
             ficha.rect.center = [j*50+50,i*50+50]
             lista.append(ficha)
+        completa.append(lista)
     print (len(lista))
-    return lista
+    return completa
 
 def torre(este): #creacion base torres cielo
     if este == 0:
