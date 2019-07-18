@@ -5,6 +5,7 @@ import socket
 import select
 import sys
 import os
+import thread
 from thread import *
 import random
 
@@ -378,7 +379,7 @@ if __name__ == '__main__':
     while not juego:
         sockets = [sys.stdin, server]
         leidos, escrito, error = select.select(sockets, [], [])
-        for sock in leidos:
+        for socks in leidos:
             if socks == server:
                 mensaje = socks.recv(1024)
                 os.system('cls' if os.name == 'nt' else 'clear')
