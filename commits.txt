@@ -1,8 +1,165 @@
+commit d1348c91ddb4d52cb54fb24aebb43a815418bd52
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Wed Jul 17 00:17:31 2019 -0500
+
+    Falta definir movimientos por dados
+
+commit fa7ea651065a0d3169eae351e90a8ee9f2baf627
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Tue Jul 16 23:08:23 2019 -0500
+
+    falta mandar los datos al server
+
+commit 12d387618a2b2001f56fe8d98b6cd3e7e1f7def1
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Tue Jul 16 22:41:23 2019 -0500
+
+    masd
+
+commit be6f3ab770edcd9f5baf083f7224a4912ef17314
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Tue Jul 16 22:35:05 2019 -0500
+
+    chechpoint
+
+commit 5b24ceaedd65d986f5d5bca46919c860d493a2e6
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Tue Jul 16 21:51:16 2019 -0500
+
+    inprogress
+
+commit b0482263dde6fa8afe6f10a05927df7375462c5b
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Tue Jul 16 18:11:41 2019 -0500
+
+    cambios
+
+commit 877046f618dc4e8dbcb41fbf0d122136c7cffd27
+Author: Alejandro Osorio Trujillo <30884745+alejoso76@users.noreply.github.com>
+Date:   Tue Jul 16 17:54:20 2019 -0500
+
+    Pocos cambios
+
+commit 6fae47a8d588200fe72b34b271aee6cc84b85346
+Author: Alejandro Osorio Trujillo <30884745+alejoso76@users.noreply.github.com>
+Date:   Tue Jul 16 17:07:09 2019 -0500
+
+    Muestra hora en pantalla
+
+commit a628e822ff1b930e03f22c93f3d2a42ad8314481
+Author: Alejandro Osorio Trujillo <30884745+alejoso76@users.noreply.github.com>
+Date:   Tue Jul 16 14:40:35 2019 -0500
+
+    Se eliminan espacios innecesarios
+
+commit def4da3d090bd3aa6256e8b859ff6ab10f3b70ab
+Author: Alejandro Osorio Trujillo <30884745+alejoso76@users.noreply.github.com>
+Date:   Tue Jul 16 14:39:14 2019 -0500
+
+    Comentarios varios
+
+commit 10963ca72e741ac7b6d6e6d8ffa3b8a68aba0f51
+Author: Alejandro Osorio Trujillo <30884745+alejoso76@users.noreply.github.com>
+Date:   Tue Jul 16 14:36:03 2019 -0500
+
+    Dados se actualizan en pantalla
+
+commit 2a33721c054448a15eeb682055323e03e5ae0ba8
+Author: Alejandro Osorio Trujillo <30884745+alejoso76@users.noreply.github.com>
+Date:   Tue Jul 16 14:20:27 2019 -0500
+
+    Cada dado se le asigna su valor despues del lanzamiento
+
+commit 30edeb08d3e65e84824e25360586ac9686910b4f
+Author: Andres Felipe Ospina Gualteros <46975387+Pamtzo@users.noreply.github.com>
+Date:   Sat Jul 6 21:47:14 2019 -0500
+
+    Add files via upload
+
+commit a050915d0490d4d66fdadf4edc29144199cef528
+Author: Alejandro Osorio Trujillo <30884745+alejoso76@users.noreply.github.com>
+Date:   Fri Jul 5 11:44:40 2019 -0500
+
+    Cambios menores
+
+commit d2376cd86e698738dc87f6e1b17e687d5b3a0db4
+Author: Alejandro Osorio Trujillo <30884745+alejoso76@users.noreply.github.com>
+Date:   Fri Jul 5 11:29:32 2019 -0500
+
+    Se agrega valor a los dados y funcion de lanzamiento. Aun falta actualizar valor dados
+
+commit d336515cc64433a6fb069ec4214c9cf9778c1058
+Author: Alejandro Osorio Trujillo <30884745+alejoso76@users.noreply.github.com>
+Date:   Mon Jul 1 20:01:15 2019 -0500
+
+    Se agrega notificacion clic y clic boton (Por arreglar)
+
+commit f64709ed8d5cd2999cbf2707f6a51534179b60de
+Author: Alejandro Osorio Trujillo <30884745+alejoso76@users.noreply.github.com>
+Date:   Mon Jul 1 19:22:50 2019 -0500
+
+    Se agregan dados y boton como objetos
+
+commit 194392b18c24db12c513d0e070fd61dd33dad163
+Author: Alejandro Osorio Trujillo <30884745+alejoso76@users.noreply.github.com>
+Date:   Mon Jul 1 16:20:08 2019 -0500
+
+    Se agrega funcion de dados
+
+commit 6049da26415715098c623b251f03951166d0e188
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Mon Jun 24 19:17:04 2019 -0500
+
+    Comenzando lo funcional
+
+commit edc6b6abcbf835459b541eaf71831f2b3fb6ced0
+Merge: d450175 57b1dfd
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Mon Jun 24 14:27:22 2019 -0500
+
+    Merge branch 'master' of https://github.com/Jacobo-Arias/Distributed-Parques
+
 commit d4501755a14b974821fd33f9e458f07a72f927be
 Author: Jacobo Arias <jacobo.a12@utp.edu.co>
 Date:   Mon Jun 24 14:26:58 2019 -0500
 
     Tablero final
+
+commit 57b1dfdfaf8c0e085d509932d43539f6ea3640c2
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Mon Jun 24 14:22:56 2019 -0500
+
+    Tablero listo del todo
+
+commit 48f57899f4080c58db197d581e2f224f610e3f75
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Mon Jun 24 13:55:54 2019 -0500
+
+    mapa ahora si full
+
+commit b3ecae8f1d85e86b69e6887bb960f53cd38c422c
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Mon Jun 24 13:51:12 2019 -0500
+
+    "cambios ejemplo"
+
+commit 8d40ddf711229dd3c6d75a278e7d4b21773c09bc
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Mon Jun 24 11:34:54 2019 -0500
+
+    Add files via upload
+
+commit ee64e42d10d2ffe6e99a5772a05163ba8a485721
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Mon Jun 24 02:52:31 2019 -0500
+
+    Tablero listo para trabajar lo funcional
+
+commit 8e61f99383f95f4f12763fb2451db30a1c5a6063
+Author: Jacobo Arias <jacobo.a12@utp.edu.co>
+Date:   Mon Jun 24 02:47:47 2019 -0500
+
+    Actualizacion
 
 commit 12f362e26fbbc9378b094285e5478774bf87d6d8
 Author: Jacobo Arias <jacobo.a12@utp.edu.co>

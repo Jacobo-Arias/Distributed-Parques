@@ -9,7 +9,7 @@ seguros=[1,6,13,18,23,30,35,40,47,52,57,64]
 class Tablero():
 	def __init__(self):
 		#Todas las fichas empiezan el la carcel
-		self.jugador1=[-1,0,0,0] #Verdes
+		self.jugador1=[0,0,0,0] #Verdes
 		self.jugador2=[0,0,0,0] #Azules
 		self.jugador3=[0,0,0,0] #Rojas
 		self.jugador4=[0,0,0,0] #Amarillas
@@ -26,13 +26,15 @@ class Tablero():
 		for n in range(4):
 			if quien[n]>0:
 				jugadas=self.cielo(jugador, jugadas)
-				quien[n]+=int(jugadas[n])
+				if int(jugadas[n])>0:
+					quien[n]+=int(jugadas[n])
+					quien[n]=(quien[n]%69)
+					print quien[n], "PELIGRO"
 				self.comer(quien,jugador)
 				print("aqui")
 				self.ganadas(jugador)
 				print("salio")
 
-#---------------------------------------------------------------------------------------CORREGIR
 	def ganadas(self,jugador):
 		for n in range(4):
 			if jugador=="1" and self.jugador1[n]>75:
@@ -63,6 +65,7 @@ class Tablero():
 	def cielo(self,jugador, jugadas):
 		if jugador=="1":
 			for n in range(4):
+				print("que hago")
 				if self.jugador1[n]<69 and self.jugador1[n]+int(jugadas[n])>68: #Poner en la entrada al cielo
 					jugadas[n]=str(int(jugadas[n])-(69-self.jugador1[n]))
 					self.jugador1[n]=1
@@ -71,6 +74,8 @@ class Tablero():
 					print("aqui que")
 					self.jugador1[n]= 69 #numero del cielo verde
 					jugadas[n]= str(int(jugadas[n])-1)
+					self.jugador1[n]+=jugadas[n]
+					jugadas[n]=0
 		if jugador=="2":
 			for n in range(4):
 				if self.jugador2[n]<18 and self.jugador2[n]+int(jugadas[n])>17:
@@ -78,7 +83,10 @@ class Tablero():
 					self.jugador2[n]=18
 				if self.jugador2[n]==18 and int(jugadas[n])>=1:
 					self.jugador2[n]= 76 #numero del cielo azul
+					print self.jugador2
 					jugadas[n]= str(int(jugadas[n])-1)
+					self.jugador2[n]+=jugadas[n]
+					jugadas[n]=0
 		if jugador=="3":
 			for n in range(4):
 				if self.jugador3[n]<35 and self.jugador3[n]+int(jugadas[n])>34: #Poner en la entrada al cielo
@@ -87,6 +95,8 @@ class Tablero():
 				if self.jugador3[n]==35 and int(jugadas[n])>=1: #entrar al cielo
 					self.jugador3[n]= 83 #numero del cielo rojo
 					jugadas[n]= str(int(jugadas[n])-1)
+					self.jugador3[n]+=jugadas[n]
+					jugadas[n]=0
 		if jugador=="4":
 			for n in range(4):
 				if self.jugador4[n]<52 and self.jugador4[n]+int(jugadas[n])>51: #Poner en la entrada al cielo
@@ -95,6 +105,8 @@ class Tablero():
 				if self.jugador4[n]==52 and int(jugadas[n])>=1: #entrar al cielo
 					self.jugador4[n]= 90 #numero del cielo amarillo
 					jugadas[n]= str(int(jugadas[n])-1)
+					self.jugador4[n]+=jugadas[n]
+					jugadas[n]=0
 		return jugadas
 
 	def sacar(self,jugador):
@@ -119,7 +131,12 @@ class Tablero():
 					self.jugador4[n] = 57
 	#Salida de las amarillas
 
-#---------------------------------------------------------------------------------------CORREGIR
+	def carcel(self, jugador):
+		for n in jugador:
+			if n!=-1 and n!=0:
+				return False
+		return True
+
 	def quien(self,jugador):
 		if jugador=="1":
 			return self.jugador1
@@ -185,9 +202,8 @@ def estado_tablero():
 	for n in Game.jugador4:
 		mensaje+= str(n)+" "
 	mensaje=mensaje[:-1]
-	mensaje+="#"
 	now = datetime.datetime.now()
-	mensaje+=str(now.hour)+":"+str(now.minute)
+	mensaje+="#"+str(now.hour)+":"+str(now.minute)
 	print mensaje
 	return mensaje
 
@@ -223,6 +239,7 @@ def clienteHilo(conn, addr):
 
 	global turno
 	global uso
+	global intentos
 
 	while True:
 		if ganador()!="nadie":
@@ -233,14 +250,18 @@ def clienteHilo(conn, addr):
 			#Njugador:cuanto la quiere mover ficha de posicion
 			#Las fichas que no se mueven tienen 0 en el segundo campo
 			mensaje = conn.recv(1024)
-			print mensaje,turno,uso
+			print (mensaje,turno,uso)
 			#Semaforo por turnos
 			if mensaje[0]=="1" and turno==1 and uso:
 				#Descifro el mensaje
 				uso=False
 				move = mensaje.split(":")[1].split(" ")
-				if not Game.presadas(move):
+				if not Game.carcel(Game.jugador1):
+					intentos=0
+				intentos-=1
+				if not Game.presadas(move) and intentos<=0:
 					turno=2
+					intentos=3
 				Game.mover(mensaje[0], move)
 				uso=True
 				print estado_tablero()
@@ -251,8 +272,12 @@ def clienteHilo(conn, addr):
 				print "aqui"
 				uso=False
 				move = mensaje.split(":")[1].split(" ")
-				if not Game.presadas(move):
+				if not Game.carcel(Game.jugador2):
+					intentos=0
+				intentos-=1
+				if not Game.presadas(move)and intentos<=0:
 					turno=3
+					intentos=3
 				Game.mover(mensaje[0], move)
 				uso=True
 				broadcast(estado_tablero())
@@ -260,8 +285,12 @@ def clienteHilo(conn, addr):
 				#Descifro el mensaje
 				uso=False
 				move = mensaje.split(":")[1].split(" ")
-				if not Game.presadas(move):
+				if not Game.carcel(Game.jugador3):
+					intentos=0
+				intentos-=1
+				if not Game.presadas(move)and intentos<=0:
 					turno=4
+					intentos=3
 				Game.mover(mensaje[0], move)
 				uso=True
 				broadcast(estado_tablero())
@@ -269,8 +298,12 @@ def clienteHilo(conn, addr):
 				#Descifro el mensaje
 				uso=False
 				move = mensaje.split(":")[1].split(" ")
-				if not Game.presadas(move):
+				if not Game.carcel(Game.jugador4):
+					intentos=0
+				intentos-=1
+				if not Game.presadas(move)and intentos<=0:
 					turno=1
+					intentos=3
 				Game.mover(mensaje[0], move)
 				uso=True
 				broadcast(estado_tablero())
@@ -302,14 +335,16 @@ def remove(conexion):
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-server.bind(("192.168.1.70", 8000))
+server.bind(("192.168.9.17", 8000))
 server.listen(5)
 clientes = []
 listaNombres = [None,None,None,None]
 Game=Tablero()
 finalserver=False
+
 turno=1
 uso=True
+intentos=3
 
 while not finalserver:
 	conn, addr = server.accept()
