@@ -445,7 +445,7 @@ if __name__ == '__main__':
             leidos, escrito, error = select.select(sockets, [], [])
             for socks in leidos:
                 if socks == server:
-                    mensaje = sock.recv(1024)
+                    mensaje = socks.recv(1024)
                     mensaje = mensaje.split("#")
                     aux = mensaje[3]
                     mensaje[3] = mensaje[2]
