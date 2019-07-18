@@ -54,6 +54,12 @@ class botonFicha (pygame.sprite.Sprite):
         self.carcel = True
         self.cielo = False
         self.seleccionado = False
+        self.valorAMover = 0
+
+	def reiniciarSeleccion(self):
+		if self.seleccionado:
+			self.image.fill([220, 220, 220])
+			self.seleccionado = False
 
     def estaSeleccionado (self):
         if self.seleccionado == False:
@@ -121,8 +127,8 @@ class botonMovimiento (pygame.sprite.Sprite):
         self.image = pygame.Surface([150, 50])
         self.image.fill([63, 122, 77])
         self.rect = self.image.get_rect()
-        self.rect.x = 770
-        self.rect.y = 200
+        self.rect.x = 900
+        self.rect.y = 350
         self.presionado = False
         self.texto = "Mover"
 
@@ -147,14 +153,14 @@ def lanzamientoDados (inicioJuego, fichasRestantes):
 
 def CreacionFichos():
     aux = [[1,69,75],[18,76,82],[52,90,96],[35,83,89]]
-    lista = []
     completa = []
     for j in range (4):
-        for i in range (4):
-            ficha = Ficho([colores[j],i+1],aux[j])
-            ficha.rect.center = [j*50+50,i*50+50]
-            lista.append(ficha)
-        completa.append(lista)
+		lista = []
+		for i in range (4):
+			ficha = Ficho([colores[j],i+1],aux[j])
+			ficha.rect.center = [j*50+50,i*50+50]
+			lista.append(ficha)
+		completa.append(lista)
     print (len(lista))
     return completa
 
@@ -326,6 +332,11 @@ def creabotones():
         salida.append(botonF)
     return salida
 
+def creaBotonMover():
+	salida = []
+	botonM = botonMovimiento()
+	return salida
+
 def armar(jugada):
 	mensaje=numero+":"
 	for n in jugada:
@@ -334,7 +345,7 @@ def armar(jugada):
 
 def lanzar():
 	global pantalla
-
+	movimientos = 2
 	global uso
 	while True:
 		pantalla.fill([255,255,255])
@@ -362,19 +373,16 @@ def lanzar():
 					if event.type == pygame.MOUSEBUTTONDOWN:
 							print ("Clic")
 							clicD = 1
-							for d in dados:
-								if d.rect.collidepoint(pos):
-									d.estaSeleccionado()
-								print (str(d.numeroDado) + ": " + str(d.seleccionado))
-
-							for bf in botonesFichas:
-								if bf.rect.collidepoint(pos):
-									bf.estaSeleccionado()
-
+							clicM = True
 							for b in botones:
 								if b.rect.collidepoint(pos):
 									if clicD == 1:
 										dadosT = lanzamientoDados(False, 3)
+										movimientos = 2
+										for f in botonesFichas:
+											f.valorAMover = 0
+											f.seleccionado = False
+
 										print (dadosT)
 										posiblesLanzamientos =[dadosT[0] + dadosT[1], dadosT[0], dadosT[1]]
 										if dadosT[0] == dadosT[1]:
@@ -395,7 +403,117 @@ def lanzar():
 										else:
 											d.valor = dadosT[1]
 											d.updateValor(dadosT[1])
+							for d in dados:
+								if d.rect.collidepoint(pos):
+									d.estaSeleccionado()
+									if d.numeroDado == 1:
+										if d.seleccionado:
+											listaDados[0] = d.valor
+											listaDados[2] = True
+										else:
+											listaDados[0] = 0
+											listaDados[2] = False
 
+									else:
+										if d.seleccionado:
+											listaDados[1] = d.valor
+											listaDados[3] = True
+										else:
+											listaDados[1] = 0
+											listaDados[3] = False
+							
+							for b in botonesFichas:
+								if b.rect.collidepoint(pos):
+									b.estaSeleccionado()
+									if b.seleccionado and movimientos > 0:
+										if listaDados[2]:
+											if b.ficha == 1:
+												b.valorAMover += listaDados[0]
+												movimientos -= 1
+												b.seleccionado = False
+												b.image.fill([220, 220, 220])
+												for d in dados:
+													d.image.fill([220, 220, 220])
+												pygame.display.flip()
+											if b.ficha == 2:
+												b.valorAMover += listaDados[0]
+												movimientos -= 1
+												b.seleccionado = False
+												b.image.fill([220, 220, 220])
+												for d in dados:
+													d.image.fill([220, 220, 220])
+												pygame.display.flip()
+											if b.ficha == 3:
+												b.valorAMover += listaDados[0]
+												movimientos -= 1
+												b.seleccionado = False
+												b.image.fill([220, 220, 220])
+												for d in dados:
+													d.image.fill([220, 220, 220])
+												pygame.display.flip()
+
+											if b.ficha == 4:
+												b.valorAMover = listaDados[0]
+												movimientos -= 1
+												b.seleccionado = False
+												b.image.fill([220, 220, 220])
+												for d in dados:
+													d.image.fill([220, 220, 220])
+												pygame.display.flip()
+											listaDados[2] = False
+												
+										elif listaDados[3]:
+											if b.ficha == 1:
+												b.valorAMover += listaDados[1]
+												movimientos -= 1
+												b.seleccionado = False
+												b.image.fill([220, 220, 220])
+												for d in dados:
+													d.image.fill([220, 220, 220])
+												pygame.display.flip()
+											if b.ficha == 2:
+												b.valorAMover += listaDados[1]
+												movimientos -= 1
+												b.seleccionado = False
+												b.image.fill([220, 220, 220])
+												for d in dados:
+													d.image.fill([220, 220, 220])
+												pygame.display.flip()
+											if b.ficha == 3:
+												b.valorAMover += listaDados[1]
+												movimientos -= 1
+												b.seleccionado = False
+												b.image.fill([220, 220, 220])
+												for d in dados:
+													d.image.fill([220, 220, 220])
+												pygame.display.flip()
+
+											if b.ficha == 4:
+												b.valorAMover += listaDados[1]
+												movimientos -= 1
+												b.seleccionado = False
+												b.image.fill([220, 220, 220])
+												for d in dados:
+													d.image.fill([220, 220, 220])
+												pygame.display.flip()
+											b.image.fill([220, 220, 220])
+											listaDados[3] = False
+
+							for b in botonesMover:
+								if clicM:
+									global numero
+									global server
+									if b.rect.collidepoint(pos):
+										print "envio"
+										mensaje=numero+":"
+										jugada=[]
+										for b in botonesFichas:
+											jugada.append(b.valorAMover)
+										for n in jugada:
+											mensaje+=str(n)+" "
+										mensaje= mensaje[:-1]
+										server.send(mensaje)
+								clicM = False
 								clicD = 0
 			#Se dibujan casillas
 			grupo.draw(pantalla)
@@ -433,6 +551,7 @@ def lanzar():
 
 			#Boton lanzar
 			pygame.draw.rect(pantalla, [0,0,0], [770, 200, 150, 50], 4)
+			#Boton mover
 			pygame.draw.rect(pantalla, [0,0,0], [900, 350, 150, 50], 4)
 
 			#Se dibujan dados y boton de lanzamiento
@@ -444,14 +563,16 @@ def lanzar():
 				pantalla.blit(fuenteDados.render("Lanzar", False, [0,0,0]), b.rect.topleft)
 			for b in botonesFichas:
 				pantalla.blit(fuenteDados.render(str(b.ficha), False, [0,0,0]), b.rect.topleft)
+				pantalla.blit(fuenteDados.render(str(b.valorAMover), False, [0,0,0]), b.rect.center)
+			for b in botonesMover:
+				pantalla.blit(fuenteDados.render("Mover", False, [0,0,0]), b.rect.topleft)
 
 			pantalla.blit(fuenteDados.render("Fichas", False, [0,0,0]), [700, 350])
-			pantalla.blit(fuenteDados.render("Mover", False, [0,0,0]), [900, 350])
 			pygame.display.flip()
 			uso=False
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.connect(("localhost", 8000))
+server.connect(("192.168.9.17", 8000))
 
 os.system('cls' if os.name == 'nt' else 'clear')
 nombre = raw_input("Ingresa tu nombre:")
@@ -459,6 +580,7 @@ server.send(":"+nombre)
 numero="0"
 juego=False
 uso=False
+listaDados= [0, 0, False, False]
 
 if __name__ == '__main__':
     pygame.init()
@@ -468,6 +590,7 @@ if __name__ == '__main__':
     todos = pygame.sprite.Group()
     botones = pygame.sprite.Group()
     botonesFichas = pygame.sprite.Group()
+    botonesMover = pygame.sprite.Group()
     dados = pygame.sprite.Group()
     grupo = pygame.sprite.Group()
     lista, bases, blancos = cuadros()
@@ -491,6 +614,11 @@ if __name__ == '__main__':
     botonLanzar = botonLanzamiento()
     botones.add(botonLanzar)
     todos.add(botonLanzar)
+
+    botonMov = botonMovimiento()
+    botonesMover.add(botonMov)
+    todos.add(botonMov)
+
     presada = False
     fin = False
 
@@ -509,27 +637,37 @@ if __name__ == '__main__':
                 print (mensaje)
     if juego:
 		start_new_thread(lanzar,())
-        while not fin:
-            pantalla.fill([255,255,255])
-            sockets =[sys.stdin, server]
-            leidos, escrito, error = select.select(sockets, [], [])
-            for socks in leidos:
-                if socks == server:
-                    mensaje = socks.recv(1024)
-                    mensaje = mensaje.split("#")
-                    aux = mensaje[3]
-                    mensaje[3] = mensaje[2]
-                    mensaje[2] = aux
-                    pantalla.blit(fuenteDados.render(str(mensaje[-1]), False, [0,0,0]), [700, 600])
-                    for n in range(4):
-                        mensaje[n] = mensaje[n].split(" ")
-                    for i in range (4):
-                        for j in range(4):
-                            fichos[i][j].pos = mensaje[i][j]
-                    if mensaje[0] == 'G':
-                        juego = False
-                        fin = True
-                    break
+		while not fin:
+			pantalla.fill([255,255,255])
+			sockets =[sys.stdin, server]
+			leidos, escrito, error = select.select(sockets, [], [])
+			for socks in leidos:
+				if socks == server:
+					mensaje = socks.recv(1024)
+					print mensaje
+					mensaje = mensaje.split("#")
+					aux = mensaje[3]
+					mensaje[3] = mensaje[2]
+					mensaje[2] = aux
+					pantalla.blit(fuenteDados.render(str(mensaje[-1]), False, [0,0,0]), [700, 600])
+					for n in range(4):
+						mensaje[n] = mensaje[n].split(" ")
+					print mensaje
+					
+					print len(fichos)
+					for n in fichos:
+						print len(n), "elemento"
 
-            pygame.display.flip()
-server.close()
+					for i in range(4):
+						for j in range(4):
+							fichos[i][j].pos=int(mensaje[i][j])
+					
+					for i in range(4):
+						for j in range(4):
+							print fichos[i][j].pos
+					print("actualice")
+					if mensaje[0] == 'G':
+						juego = False
+						fin = True
+					break
+    server.close()
